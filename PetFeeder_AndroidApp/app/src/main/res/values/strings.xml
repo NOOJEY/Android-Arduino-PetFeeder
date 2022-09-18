@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">멍멍</string>
+    <string name="app_name">기기명: DOG</string>
     <string name="devices">기기명: DOG</string>
 
     <string name="location_permission_title">Location permission required</string>

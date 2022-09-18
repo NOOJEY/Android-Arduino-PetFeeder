@@ -17,6 +17,8 @@ SoftwareSerial BTSerial(10, 11);
 */
 bool commandActive = false;
 bool secommandActive = false;
+bool remainCheckActive = false;
+
 int motorA = 6;
 int motorB = 5;
 int ENA = 4;
@@ -106,7 +108,6 @@ void loop(){
     }
     else if(byteToString == "feedDataRequest"){
       byteToString = "";
-
       /*정렬 후 전송*/
       if(feedCNT > 8){
         for(int i = 0; i < 9; i++){
@@ -185,34 +186,31 @@ void loop(){
       feeding();
     }
   }
-
-  if(currentTime - WhenFeedsec >= 15000){
-    remainFeed = getWeight();
-    if(feedCNT > 8){
-        feedData[9] = remainFeed;
-        feedData[0] = feedData[1];
-        for(int i = 1; i < 9; i++){
-            feedData[i] = feedData[i+1];
-          }
-      }
-
-      else if(feedCNT <= 8){
-        feedData[(feedCNT % 10)] = remainFeed;
-      }
-      feedCNT += 1;
+  
+  if(remainCheckActive){
+    if(currentTime - WhenFeedsec >= 15000){
+      remainFeed = getWeight();
+      if(feedCNT > 8){
+          feedData[9] = remainFeed;
+          feedData[0] = feedData[1];
+          for(int i = 1; i < 9; i++){
+              feedData[i] = feedData[i+1];
+              delay(100);
+            }
+        }
+        else if(feedCNT <= 8){
+          feedData[(feedCNT % 10)] = remainFeed;
+        }
+        feedCNT += 1;
+        remainCheckActive = false;
+    }
   }
-    /*
-    Serial2.print(myrtc.getDOWStr());           // 시리얼 모니터에 요일 출력
-    Serial2.print(" ");
-    Serial2.print(myrtc.getDateStr());             // 시리얼 모니터에 날짜 출력
-    Serial2.print(" -- ");
-    Serial2.println(myrtc.getTimeStr());           // 시리얼 모니터에 시간 출력
-    delay(1000);                                            // 1초의 딜레이
-     */
-   
 }
+
+
+
 void mp3(){
-  int song = random(1, 2);
+  int song = random(1, 3);
   myDFPlayer.play(song);
 }
 float getWeight(){
@@ -226,5 +224,6 @@ void feeding(){
     digitalWrite(motorB, LOW);
   }
   digitalWrite(motorA, LOW);
+  remainCheckActive = true;
   WhenFeedsec = millis();
 }
