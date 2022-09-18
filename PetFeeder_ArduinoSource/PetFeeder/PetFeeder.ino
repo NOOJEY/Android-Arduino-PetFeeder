@@ -219,7 +219,7 @@ float getWeight(){
 
 void feeding(){
   mp3();
-  while(getWeight() < feedAmount){
+  while(getWeight() < feedAmount - remainFeed){
     digitalWrite(motorA, HIGH);
     digitalWrite(motorB, LOW);
   }
