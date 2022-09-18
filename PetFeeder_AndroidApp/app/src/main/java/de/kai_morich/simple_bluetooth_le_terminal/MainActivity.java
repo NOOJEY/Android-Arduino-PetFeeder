@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("사료 급여관리");
         mContext= this;
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         if (savedInstanceState == null) {

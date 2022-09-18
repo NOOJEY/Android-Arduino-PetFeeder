@@ -69,7 +69,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
     private boolean hexEnabled = false;
     private boolean pendingNewline = false;
     private String newline = TextUtil.newline_crlf;
-    Button playButton1, playButton2, applyButton;
+    Button playButton1, playButton2, applyButton, SeekbarApplyBtn;
     SeekBar feedingAmount;
     EditText feedTime, feedTime2, feedTime3, feedTime12, feedTime22, feedTime32;
     private int fTime, fAmount = 0, moH=0, moM=0, luH=0, luM=0, diH=0, diM=0;
@@ -159,6 +159,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
         playButton1 = view.findViewById(R.id.play1);
         playButton2 = view.findViewById(R.id.play2);
         applyButton = view.findViewById(R.id.applyButton);
+        SeekbarApplyBtn = view.findViewById(R.id.seekBarApply);
         playButton1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -208,9 +209,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 fAmount = i;
-                feedingAmountText.setText(String.valueOf(i));
-
-                sendNum("Amount");
+                feedingAmountText.setText(String.valueOf(i) + "g");
             }
 
             @Override
@@ -221,8 +220,12 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-
-
+        SeekbarApplyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendNum("Amount");
+            }
+        });
 
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override

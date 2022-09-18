@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/ic_launcher_background"/>
+        android:textColor="#244C2B"
+        />
 
     <TextView
         android:id="@+id/text2"
@@ -23,6 +24,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/ic_launcher_background"/>/>
+        android:textColor="#244C2B"/>/>
 
 </LinearLayout>
