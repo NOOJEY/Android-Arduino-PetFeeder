@@ -1,6 +1,7 @@
 #include <DS1302.h>
 #include <DFRobotDFPlayerMini.h>
 #include <SoftwareSerial.h>
+
 #include <HX711.h>
 
 #define calibration_factor -7050.0
@@ -26,20 +27,23 @@ DS1302 myrtc(RST, DAT, CLK);
 Time t;
 
 String temp = "";
-String inputValue = "100";
-String feedTime[6] = {"8","0","12","0","18","0"};
+
 int inputCount = 0;
 int ftCount = 0;
 int feedAmount = 100; //default 값
 int feedCNT = 0;
 
-int MorningFeedH = 8;
+int MorningFeedH = 8; // 사료 급여시간 설정
 int MorningFeedM = 0;
-int LunchFeedH = 16;
-int LunchFeedM = 17;
+int LunchFeedH = 12;
+int LunchFeedM = 00;
 int DinnerFeedH = 18;
 int DinnerFeedM = 0;
-int commonSeconds = 0;
+
+unsigned long WhenFeedsec = 0;
+unsigned long currentTime = 0;
+float remainFeed = 0;
+
 byte data = "";
 float feedData[10] = {};
 String byteToString ="";
@@ -65,6 +69,7 @@ void setup(){
   }
 void loop(){
   t = myrtc.getTime();
+  currentTime = millis();
   
   /*블루투스로 사료 잔여량 확인*/
   while(BTSerial.available()){
@@ -78,12 +83,14 @@ void loop(){
     byteToString += char(data);
     Serial.println(byteToString);
 
+    // seekBar로 급여량 설정하는 부분
     if(byteToString == "Amount"){
       Serial.println(byteToString);
       commandActive = true;
       byteToString = "";
       continue;
-    }
+    } 
+    // EditText로 급여 시간 설정하는 부분
     if(byteToString == "Time"){
       Serial.println(byteToString);
       secommandActive = true;
@@ -100,11 +107,6 @@ void loop(){
 
       /*정렬 후 전송*/
       if(feedCNT > 8){
-        feedData[9] = getWeight();
-        feedData[0] = feedData[1];
-        for(int i = 1; i < 9; i++){
-            feedData[i] = feedData[i+1];
-          }
         for(int i = 0; i < 9; i++){
           BTSerial.print(feedData[i]);
           delay(100);
@@ -112,13 +114,11 @@ void loop(){
       }
 
       else if(feedCNT <= 8){
-        feedData[(feedCNT % 10)] = getWeight();
         for(int i = 0 ; i < (feedCNT % 9 + 1); i++){
           BTSerial.print(feedData[i]);
           delay(100);
         }
       }
-      feedCNT += 1;
     }
   }
   delay(100);/*오동작 방지 딜레이*/
@@ -183,7 +183,22 @@ void loop(){
       feeding();
     }
   }
-  myDFPlayer.stop();
+
+  if(currentTime - WhenFeedsec >= 15000){
+    remainFeed = getWeight();
+    if(feedCNT > 8){
+        feedData[9] = remainFeed;
+        feedData[0] = feedData[1];
+        for(int i = 1; i < 9; i++){
+            feedData[i] = feedData[i+1];
+          }
+      }
+
+      else if(feedCNT <= 8){
+        feedData[(feedCNT % 10)] = remainFeed;
+      }
+      feedCNT += 1;
+  }
     /*
     Serial2.print(myrtc.getDOWStr());           // 시리얼 모니터에 요일 출력
     Serial2.print(" ");
@@ -209,4 +224,5 @@ void feeding(){
     digitalWrite(motorB, LOW);
   }
   digitalWrite(motorA, LOW);
+  WhenFeedsec = millis();
 }
