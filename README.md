@@ -10,9 +10,13 @@ Based on kai-morich "SipleBluetoothLeTerminal"
 -- PART LISTS --
 
 Arduino MEGA 2560
+
 HX 711 + 5KG LOADCELL
+
 DS1302 RTC MODULE
+
 28BYJ-48 STEP MOTER + ULN2003 DRIVER
+
 HM10 BLE MODULE
 
 
