@@ -42,7 +42,6 @@ int DinnerFeedH = 18;
 int DinnerFeedM = 0;
 
 unsigned long WhenFeedsec = 0;
-unsigned long currentTime = 0;
 float remainFeed = 0;
 
 byte data = "";
@@ -72,7 +71,7 @@ void setup(){
 void loop(){
   scale.set_scale(calibration_factor);
   t = myrtc.getTime();
-  currentTime = millis();
+
 
   /*블루투스로 사료 잔여량 확인*/
   while(BTSerial.available()){
@@ -116,7 +115,7 @@ void loop(){
       }
 
       else if(feedCNT <= 8){
-        for(int i = 0 ; i < (feedCNT % 9 + 1); i++){
+        for(int i = 0 ; i < (feedCNT % 9); i++){
           BTSerial.print(feedData[i]);
           delay(100);
         }
@@ -187,26 +186,28 @@ void loop(){
   }
 
   if(remainCheckActive){
-    if(currentTime - WhenFeedsec >= 15000){
+    if(millis() - WhenFeedsec >= 14000){
       remainFeed = getWeight();
+      Serial.println(remainFeed);
+      
       if(feedCNT > 8){
-          feedData[9] = feedAmount - remainFeed;
+          feedData[9] = remainFeed;
           feedData[0] = feedData[1];
           for(int i = 1; i < 9; i++){
               feedData[i] = feedData[i+1];
               delay(100);
             }
         }
-        else if(feedCNT <= 8){
-          feedData[(feedCNT % 10)] = feedAmount - remainFeed;
+      else if(feedCNT <= 8){
+          feedData[(feedCNT % 10)] = remainFeed;
         }
-        feedCNT += 1;
-        remainCheckActive = false;
+      feedCNT += 1;
+      remainCheckActive = false;
     }
   }
-  feeding();
+  
+  delay(100);
 }
-
 
 
 void mp3(){
@@ -219,6 +220,7 @@ float getWeight(){
 
 void feeding(){
   mp3();
+  tempWeight = 0;
   while(tempWeight < feedAmount){
     for(int i=0; i<32; i++) {  // 64 * 32 = 2048 한바퀴
       myStepper.step(stepsPerRevolution);
@@ -226,6 +228,7 @@ void feeding(){
       if(tempWeight > feedAmount) break;
     }
   }
+  delay(500);
   myDFPlayer.stop();
   remainCheckActive = true;
   WhenFeedsec = millis();
