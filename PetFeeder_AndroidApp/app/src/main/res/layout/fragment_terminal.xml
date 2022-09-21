@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_color_sample"
+    android:orientation="vertical">
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/feedChart"
+        android:layout_width="match_parent"
+        android:layout_height="281dp"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/textOne"
+        android:layout_width="50dp"
+        android:layout_height="40sp"
+        android:layout_gravity="center"
+        android:text="" />
+
+    <Button
+        android:id="@+id/play1"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/button_style"
+        android:textStyle="bold"
+        android:text="사료 섭취 데이터 동기화" />
+
+    <TextView
+        android:id="@+id/textTwo"
+        android:layout_width="231dp"
+        android:layout_height="40sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="18dp"
+        android:gravity="center_horizontal"
+        android:text="반려견의 사료 섭취량을 확인하세요!"
+        android:textColor="#244C2B"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/play2"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/button_style"
+        android:text="수동 급여"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/feedAmountText"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        android:text="사료 급여량 조절"
+        android:textColor="#244C2B"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <SeekBar
+        android:id="@+id/feedingAmount"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_marginTop="-5dp"
+        android:layout_marginBottom="30dp"
+        android:theme="@style/SeekBarColor" />
+
+    <Button
+        android:id="@+id/seekBarApply"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="-30dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/button_style"
+        android:text="급여량 적용"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="25dp"
+        android:text="사료 급여 시간 설정"
+        android:textColor="#244C2B"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/feedingTime"
+            android:layout_width="94dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:hint="시"
+            android:inputType="number"
+            android:textColor="#244C2B"
+            android:textColorHint="#244C2B" />
+
+        <EditText
+            android:textColorHint="#244C2B"
+            android:textColor="#244C2B"
+            android:id="@+id/feedingTime12"
+            android:layout_width="114dp"
+            android:layout_height="match_parent"
+            android:inputType="number"
+            android:hint="분" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/feedingTime2"
+            android:layout_width="94dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:hint="시"
+            android:inputType="number"
+            android:textColor="#1E4224"
+            android:textColorHint="#244C2B" />
+
+        <EditText
+            android:textColorHint="#244C2B"
+            android:textColor="#244C2B"
+            android:id="@+id/feedingTime22"
+            android:layout_width="114dp"
+            android:layout_height="match_parent"
+            android:inputType="number"
+            android:hint="분" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/feedingTime3"
+            android:layout_width="94dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:hint="시"
+            android:inputType="number"
+            android:textColor="#244C2B"
+            android:textColorHint="#244C2B" />
+
+        <EditText
+            android:textColorHint="#244C2B"
+            android:textColor="#244C2B"
+            android:id="@+id/feedingTime32"
+            android:layout_width="114dp"
+            android:layout_height="match_parent"
+            android:inputType="number"
+            android:hint="분" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/applyButton"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button_style"
+        android:text="시간 적용"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/receive_text"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:layout_weight="1"
+        android:freezesText="true"
+        android:gravity="bottom"
+        android:scrollbars="vertical"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+
+
+</LinearLayout>
+</ScrollView>
+
