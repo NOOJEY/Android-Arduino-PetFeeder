@@ -1,3 +1,6 @@
+![image](https://user-images.githubusercontent.com/85036337/191535158-a2cf5d84-5101-4a9d-a9ba-be4e73349d35.png)
+
+
 # Android-Arduino-PetFeeder
 류예준 졸업작품
 
