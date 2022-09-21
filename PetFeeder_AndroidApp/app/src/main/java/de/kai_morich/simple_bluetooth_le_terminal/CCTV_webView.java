@@ -43,7 +43,11 @@ public class CCTV_webView extends AppCompatActivity {
 
         webView.getSettings().setDomStorageEnabled(true);
 
+<<<<<<< HEAD
         webView.loadUrl("http://192.168.0.21/");
+=======
+        webView.loadUrl("https://288f-124-153-205-204.jp.ngrok.io/stream");
+>>>>>>> 71b1ed32c10a5333fe0396fff6ffc294160dcb06
     }
     @Override
     public void onPause(){

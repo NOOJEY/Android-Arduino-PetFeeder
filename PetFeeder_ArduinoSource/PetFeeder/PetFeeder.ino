@@ -1,7 +1,11 @@
 #include <DS1302.h>
 #include <DFRobotDFPlayerMini.h>
 #include <SoftwareSerial.h>
+<<<<<<< HEAD
 #include <Stepper.h>
+=======
+
+>>>>>>> 71b1ed32c10a5333fe0396fff6ffc294160dcb06
 #include <HX711.h>
 
 #define calibration_factor -7050.0
@@ -10,17 +14,30 @@
 HX711 scale(DOUT, CL);
 SoftwareSerial BTSerial(10, 11);
 /*블루투스 10,11 
+<<<<<<< HEAD
   mp3 rx1/tx1 18 19   
   무게 2, 3
   모터 4, 5, 6, 7
+=======
+  mp3 rx1/tx1
+  무게 2, 3
+  모터 4, 5, 6
+>>>>>>> 71b1ed32c10a5333fe0396fff6ffc294160dcb06
   RTC: SCL 23 I/O 25 RST 27
 */
 bool commandActive = false;
 bool secommandActive = false;
 bool remainCheckActive = false;
+<<<<<<< HEAD
 float tempWeight = 0;
 const int stepsPerRevolution = 64;
 Stepper myStepper(stepsPerRevolution, 7, 5, 6, 4);
+=======
+
+int motorA = 6;
+int motorB = 5;
+int ENA = 4;
+>>>>>>> 71b1ed32c10a5333fe0396fff6ffc294160dcb06
 const int CLK = 23;
 const int DAT = 25;
 const int RST = 27;
@@ -58,6 +75,7 @@ void setup(){
   myDFPlayer.begin(Serial1);
   delay(1);
   myDFPlayer.volume(30);
+<<<<<<< HEAD
   
   scale.begin(DOUT, CL);
   scale.tare();
@@ -66,11 +84,25 @@ void setup(){
   myrtc.writeProtect(false);
   myStepper.setSpeed(500);
   
+=======
+  scale.set_scale(calibration_factor);
+  scale.tare();
+
+  myrtc.halt(false);                 
+  myrtc.writeProtect(false);
+
+  pinMode(motorB, OUTPUT);
+  pinMode(motorA, OUTPUT);
+  analogWrite(ENA, 255);
+>>>>>>> 71b1ed32c10a5333fe0396fff6ffc294160dcb06
   }
 
   
 void loop(){
+<<<<<<< HEAD
   scale.set_scale(calibration_factor);
+=======
+>>>>>>> 71b1ed32c10a5333fe0396fff6ffc294160dcb06
   t = myrtc.getTime();
   currentTime = millis();
   
@@ -190,7 +222,11 @@ void loop(){
     if(currentTime - WhenFeedsec >= 15000){
       remainFeed = getWeight();
       if(feedCNT > 8){
+<<<<<<< HEAD
           feedData[9] = feedAmount - remainFeed;
+=======
+          feedData[9] = remainFeed;
+>>>>>>> 71b1ed32c10a5333fe0396fff6ffc294160dcb06
           feedData[0] = feedData[1];
           for(int i = 1; i < 9; i++){
               feedData[i] = feedData[i+1];
@@ -198,27 +234,43 @@ void loop(){
             }
         }
         else if(feedCNT <= 8){
+<<<<<<< HEAD
           feedData[(feedCNT % 10)] = feedAmount - remainFeed;
+=======
+          feedData[(feedCNT % 10)] = remainFeed;
+>>>>>>> 71b1ed32c10a5333fe0396fff6ffc294160dcb06
         }
         feedCNT += 1;
         remainCheckActive = false;
     }
   }
+<<<<<<< HEAD
   feeding();
+=======
+>>>>>>> 71b1ed32c10a5333fe0396fff6ffc294160dcb06
 }
 
 
 
 void mp3(){
+<<<<<<< HEAD
   //int song = random(1, 3);
   myDFPlayer.play(1);
 }
 float getWeight(){
   return (scale.get_units() * 0.453592 * 0.35 * 100) * -1;
+=======
+  int song = random(1, 3);
+  myDFPlayer.play(song);
+}
+float getWeight(){
+  return (scale.get_units() * 45.3592);
+>>>>>>> 71b1ed32c10a5333fe0396fff6ffc294160dcb06
 }
 
 void feeding(){
   mp3();
+<<<<<<< HEAD
   while(tempWeight < feedAmount){
     for(int i=0; i<32; i++) {  // 64 * 32 = 2048 한바퀴
       myStepper.step(stepsPerRevolution);
@@ -228,6 +280,13 @@ void feeding(){
     }
   }
   myDFPlayer.stop();
+=======
+  while(getWeight() < feedAmount - remainFeed){
+    digitalWrite(motorA, HIGH);
+    digitalWrite(motorB, LOW);
+  }
+  digitalWrite(motorA, LOW);
+>>>>>>> 71b1ed32c10a5333fe0396fff6ffc294160dcb06
   remainCheckActive = true;
   WhenFeedsec = millis();
 }
