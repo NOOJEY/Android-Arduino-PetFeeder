@@ -8,6 +8,7 @@
 #define DOUT 3
 #define CL 2
 HX711 scale(DOUT, CL);
+DFRobotDFPlayerMini myDFPlayer;
 SoftwareSerial BTSerial(10, 11);
 /*블루투스 10,11 
   mp3 rx1/tx1 18 19   
@@ -15,8 +16,8 @@ SoftwareSerial BTSerial(10, 11);
   모터 4, 5, 6, 7
   RTC: SCL 23 I/O 25 RST 27
 */
-bool commandActive = false;
-bool secommandActive = false;
+bool amountActive = false;
+bool timeSetActive = false;
 bool remainCheckActive = false;
 float tempWeight = 0;
 const int stepsPerRevolution = 64;
@@ -29,12 +30,10 @@ Time t;
 
 String temp = "";
 
-int inputCount = 0;
-int ftCount = 0;
-int feedAmount = 100; //default 값
+int feedAmount = 100; //default Amount
 int feedCNT = 0;
 
-int MorningFeedH = 8; // 사료 급여시간 설정
+int MorningFeedH = 8; // default Feeding time
 int MorningFeedM = 0;
 int LunchFeedH = 12;
 int LunchFeedM = 00;
@@ -47,7 +46,7 @@ float remainFeed = 0;
 byte data = "";
 float feedData[10] = {};
 String byteToString ="";
-DFRobotDFPlayerMini myDFPlayer;
+
 
 void setup(){
   Serial1.begin(9600);
@@ -73,40 +72,45 @@ void loop(){
   t = myrtc.getTime();
 
 
-  /*블루투스로 사료 잔여량 확인*/
   while(BTSerial.available()){
     data = BTSerial.read();
+
+    //Amount Slicing
     if(data == 'A'){
       byteToString = "";
     }
+    //Time Slicing
     if(data == 'T'){
       byteToString = "";
     }
+
     byteToString += char(data);
     Serial.println(byteToString);
 
-    // seekBar로 급여량 설정하는 부분
+    // Ready for set feedAmount with seekBar
     if(byteToString == "Amount"){
       Serial.println(byteToString);
-      commandActive = true;
+      amountActive = true;
       byteToString = "";
       continue;
     } 
-    // EditText로 급여 시간 설정하는 부분
+    // Ready for set feeding time with EditText
     if(byteToString == "Time"){
       Serial.println(byteToString);
-      secommandActive = true;
+      timeSetActive = true;
       byteToString = "";
       continue;
     }
 
+    //manual feeding
     if(byteToString == "playtwo"){
       byteToString = "";
       feeding();
     }
+
+    // feedData sort, then send to android
     else if(byteToString == "feedDataRequest"){
       byteToString = "";
-      /*정렬 후 전송*/
       if(feedCNT > 8){
         for(int i = 0; i < 9; i++){
           BTSerial.print(feedData[i]);
@@ -130,12 +134,13 @@ void loop(){
   }
   delay(100);/*오동작 방지 딜레이*/
 
-  if(commandActive){
+  if(amountActive){
     feedAmount = byteToString.toInt();
-    commandActive = false;
+    amountActive = false;
     byteToString = "";
   }
-  if(secommandActive){
+
+  if(timeSetActive){
     for(int i=0; i<12; i++){
       if(i<2){
         temp += byteToString[i];
@@ -182,7 +187,7 @@ void loop(){
       }
     }
     byteToString = "";
-    secommandActive = false;
+    timeSetActive = false;
   }
 
   if((t.hour == MorningFeedH && t.min == MorningFeedM) ||(t.hour == LunchFeedH && t.min == LunchFeedM) ||(t.hour == DinnerFeedH && t.min == DinnerFeedM)){
@@ -221,6 +226,8 @@ void mp3(){
   myDFPlayer.play(1);
 }
 float getWeight(){
+  // zero point of my loadcell censor
+  // 5kg loadcell, in grams
   return (scale.get_units() * 0.453592 * 0.35 * 100) * -1;
 }
 
