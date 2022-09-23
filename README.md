@@ -3,7 +3,7 @@
 # Android-Arduino-PetFeeder
 류예준 졸업작품
 
-Based on kai-morich "SipleBluetoothLeTerminal"
+Based on kai-morich "SimpleBluetoothLeTerminal"
 (https://github.com/kai-morich/SimpleBluetoothLeTerminal)
 
 3D Frame By mijalnymaks (actually not perfect fit with parts I used)
