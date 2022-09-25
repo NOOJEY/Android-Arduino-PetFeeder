@@ -170,7 +170,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(connected != Connected.True) {
+                        if(connected == Connected.True) {
                             Toast.makeText(getActivity(), "불러오기 성공", Toast.LENGTH_SHORT).setGravity(Gravity.TOP, 0, 0);
                         }
                         ArrayList<BarEntry> entries = new ArrayList<>();
