@@ -24,11 +24,7 @@ public class CCTV_webView extends AppCompatActivity {
 
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
-        webView.setDownloadListener(new DownloadListener() {
-            @Override
-            public void onDownloadStart(String s, String s1, String s2, String s3, long l) {
-
-            }
+        webView.setDownloadListener((s, s1, s2, s3, l) -> {
         });
 
         webView.getSettings().setLoadWithOverviewMode(true);
@@ -43,15 +39,13 @@ public class CCTV_webView extends AppCompatActivity {
 
         webView.getSettings().setDomStorageEnabled(true);
 
-<<<<<<< HEAD
-        webView.loadUrl("http://192.168.0.21/");
-=======
-        webView.loadUrl("https://288f-124-153-205-204.jp.ngrok.io/stream");
->>>>>>> 71b1ed32c10a5333fe0396fff6ffc294160dcb06
+        //webView.loadUrl("http://192.168.0.21/");
+        webView.loadUrl("https://naver.com/");
+
     }
     @Override
     public void onPause(){
-        super.onPause();;
+        super.onPause();
         webView.onPause();
     }
     @Override

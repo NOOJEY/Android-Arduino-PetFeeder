@@ -16,6 +16,7 @@ import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -154,6 +155,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
      */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_terminal, container, false);
         receiveText = view.findViewById(R.id.receive_text);                          // TextView performance decreases with number of spans
         playButton1 = view.findViewById(R.id.play1);
@@ -162,13 +164,15 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
         SeekbarApplyBtn = view.findViewById(R.id.seekBarApply);
         playButton1.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v){
+                public void onClick(View v){
                 send("feedDataRequest");
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getActivity(), "불러오기 성공", Toast.LENGTH_SHORT).show();
+                        if(connected != Connected.True) {
+                            Toast.makeText(getActivity(), "불러오기 성공", Toast.LENGTH_SHORT).setGravity(Gravity.TOP, 0, 0);
+                        }
                         ArrayList<BarEntry> entries = new ArrayList<>();
                         BarChart barChart;
                         barChart = (BarChart) view.findViewById(R.id.feedChart);
@@ -194,6 +198,9 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
             @Override
             public void onClick(View v){
                 send("playtwo");
+                if(connected == Connected.True) {
+                    Toast.makeText(getActivity(), "수동 급여중...", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -224,6 +231,9 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
             @Override
             public void onClick(View view) {
                 sendNum("Amount");
+                if(connected == Connected.True) {
+                    Toast.makeText(getActivity(), "적용 완료", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -244,6 +254,9 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
                 diH = Integer.parseInt(dH);
                 diM = Integer.parseInt(dM);*/
                 sendFeedTime("Time");
+                if(connected == Connected.True) {
+                    Toast.makeText(getActivity(), "적용 완료", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return view;
