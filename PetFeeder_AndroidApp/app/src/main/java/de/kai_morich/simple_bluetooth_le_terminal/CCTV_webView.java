@@ -39,8 +39,8 @@ public class CCTV_webView extends AppCompatActivity {
 
         webView.getSettings().setDomStorageEnabled(true);
 
-        //webView.loadUrl("http://192.168.0.21/");
-        webView.loadUrl("https://naver.com/");
+        webView.loadUrl("http://192.168.0.21/");
+        //webView.loadUrl("https://naver.com/");
 
     }
     @Override
