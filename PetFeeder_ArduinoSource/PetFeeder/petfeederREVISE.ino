@@ -7,6 +7,7 @@
 #define calibration_factor -7050.0
 #define DOUT 3
 #define CL 2
+#define IR_DETECT 29
 HX711 scale(DOUT, CL);
 DFRobotDFPlayerMini myDFPlayer;
 SoftwareSerial BTSerial(10, 11);
@@ -47,6 +48,7 @@ byte data = "";
 float feedData[10] = {};
 String byteToString ="";
 
+int ledPin = 31;
 
 void setup(){
   Serial1.begin(9600);
@@ -63,15 +65,19 @@ void setup(){
   myrtc.halt(false);                 
   myrtc.writeProtect(false);
   myStepper.setSpeed(500);
-
+  
+  pinMode(IR_DETECT, INPUT);
+  pinMode(ledPin, OUTPUT);
   }
 
 
 void loop(){
   scale.set_scale(calibration_factor);
   t = myrtc.getTime();
-
-
+  int IR = digitalRead(IR_DETECT);
+  
+  if(IR == 1) digitalWrite(ledPin, HIGH);
+  if(IR == 0) digitalWrite(ledPin, LOW);
   while(BTSerial.available()){
     data = BTSerial.read();
 
