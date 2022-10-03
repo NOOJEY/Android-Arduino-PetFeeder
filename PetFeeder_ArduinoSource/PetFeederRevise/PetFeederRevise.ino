@@ -76,8 +76,8 @@ void loop(){
   t = myrtc.getTime();
   int IR = digitalRead(IR_DETECT);
   
-  if(IR == 1) digitalWrite(ledPin, HIGH);
-  if(IR == 0) digitalWrite(ledPin, LOW);
+  if(IR == 0) digitalWrite(ledPin, HIGH);
+  if(IR == 1) digitalWrite(ledPin, LOW);
   while(BTSerial.available()){
     data = BTSerial.read();
 
