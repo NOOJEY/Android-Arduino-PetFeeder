@@ -171,7 +171,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
                     @Override
                     public void run() {
                         if(connected == Connected.True) {
-                            Toast.makeText(getActivity(), "불러오기 성공", Toast.LENGTH_SHORT).setGravity(Gravity.TOP, 0, 0);
+                            Toast.makeText(getActivity(), "불러오기 성공", Toast.LENGTH_SHORT).show();
                         }
                         ArrayList<BarEntry> entries = new ArrayList<>();
                         BarChart barChart;
@@ -184,7 +184,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
                         m1.arr.clear();
 
                         BarDataSet barDataSet = new BarDataSet(entries, "bardataset"); // 데이터가 담긴 Arraylist 를 BarDataSet 으로 변환한다.
-                        barDataSet.setColor(Color.BLUE); // 해당 BarDataSet 색 설정 :: 각 막대 과 관련된 세팅은 여기서 설정한다.
+                        barDataSet.setColor(Color.rgb(36,76,43)); // 해당 BarDataSet 색 설정 :: 각 막대 과 관련된 세팅은 여기서 설정한다.
                         barData.addDataSet(barDataSet); // 해당 BarDataSet 을 적용될 차트에 들어갈 DataSet 에 넣는다.
                         barChart.setData(barData); // 차트에 위의 DataSet 을 넣는다
                         barChart.setVisibleXRangeMaximum(3); // allow 5 values to be displayed
@@ -192,6 +192,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
                         barChart.invalidate(); // 차트 업데이트
                     }
                 }, 1500);
+
             }
         });
         playButton2.setOnClickListener(new View.OnClickListener(){
