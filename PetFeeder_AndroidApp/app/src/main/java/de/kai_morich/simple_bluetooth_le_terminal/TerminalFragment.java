@@ -182,7 +182,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
                             entries.add(new BarEntry (entries.size()+1, Float.parseFloat(value)));
                         }
                         m1.arr.clear();
-
+                        barChart.getXAxis().setGranularity(1f);
                         BarDataSet barDataSet = new BarDataSet(entries, "bardataset"); // 데이터가 담긴 Arraylist 를 BarDataSet 으로 변환한다.
                         barDataSet.setColor(Color.rgb(36,76,43)); // 해당 BarDataSet 색 설정 :: 각 막대 과 관련된 세팅은 여기서 설정한다.
                         barData.addDataSet(barDataSet); // 해당 BarDataSet 을 적용될 차트에 들어갈 DataSet 에 넣는다.
