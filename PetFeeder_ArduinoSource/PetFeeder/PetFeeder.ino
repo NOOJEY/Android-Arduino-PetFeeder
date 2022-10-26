@@ -48,7 +48,7 @@ byte data = "";
 float feedData[10] = {};
 String byteToString = "";
 
-int ledPin = 31;
+int ledPin = 44;
 
 void setup() {
   Serial1.begin(9600);
@@ -57,7 +57,7 @@ void setup() {
   Serial2.begin(9600);
   myDFPlayer.begin(Serial1);
   delay(1);
-  myDFPlayer.volume(30);
+  myDFPlayer.volume(20);
 
   scale.begin(DOUT, CL);
   scale.tare();
@@ -65,7 +65,7 @@ void setup() {
   myrtc.halt(false);
   myrtc.writeProtect(false);
   myStepper.setSpeed(500);
-
+  
   pinMode(IR_DETECT, INPUT);
   pinMode(ledPin, OUTPUT);
 }
@@ -76,8 +76,6 @@ void loop() {
   t = myrtc.getTime();
   int IR = digitalRead(IR_DETECT);
   
-  if (IR == 0) digitalWrite(ledPin, HIGH);
-  if (IR == 1) digitalWrite(ledPin, LOW);
   while (BTSerial.available()) {
     data = BTSerial.read();
 
@@ -89,7 +87,7 @@ void loop() {
     if (data == 'T') {
       byteToString = "";
     }
-
+    
     byteToString += char(data);
     Serial.println(byteToString);
 
@@ -195,7 +193,10 @@ void loop() {
     byteToString = "";
     timeSetActive = false;
   }
-
+  /*
+  Serial.println(t.hour);
+  Serial.println(t.min);
+  Serial.println(t.sec);*/
   if ((t.hour == MorningFeedH && t.min == MorningFeedM) || (t.hour == LunchFeedH && t.min == LunchFeedM) || (t.hour == DinnerFeedH && t.min == DinnerFeedM)) {
     if (t.sec == 0) {
       feeding();
@@ -222,8 +223,14 @@ void loop() {
       remainCheckActive = false;
     }
   }
-
+  if (IR == 0){
+    digitalWrite(ledPin, 1);
+  }
+  if (IR == 1){
+    digitalWrite(ledPin, 0);
+  }
   delay(100);
+ 
 }
 
 
