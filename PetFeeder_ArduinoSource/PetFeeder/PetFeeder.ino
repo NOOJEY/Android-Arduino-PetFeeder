@@ -7,7 +7,7 @@
 #define calibration_factor -7050.0
 #define DOUT 3
 #define CL 2
-#define IR_DETECT 29
+
 HX711 scale(DOUT, CL);
 DFRobotDFPlayerMini myDFPlayer;
 SoftwareSerial BTSerial(10, 11);
@@ -26,12 +26,13 @@ Stepper myStepper(stepsPerRevolution, 7, 5, 6, 4);
 const int CLK = 23;
 const int DAT = 25;
 const int RST = 27;
+
 DS1302 myrtc(RST, DAT, CLK);
 Time t;
 
 String temp = "";
-
-int feedAmount = 100; //default Amount
+int IR_DETECT = 29;
+int feedAmount = 10; //default Amount
 int feedCNT = 0;
 
 int MorningFeedH = 8; // default Feeding time
@@ -43,11 +44,9 @@ int DinnerFeedM = 0;
 
 unsigned long WhenFeedsec = 0;
 float remainFeed = 0;
-
 byte data = "";
 float feedData[10] = {};
 String byteToString = "";
-
 int ledPin = 44;
 
 void setup() {
@@ -60,12 +59,11 @@ void setup() {
   myDFPlayer.volume(20);
 
   scale.begin(DOUT, CL);
+  scale.set_scale(calibration_factor);
   scale.tare();
-  scale.set_scale();
   myrtc.halt(false);
   myrtc.writeProtect(false);
   myStepper.setSpeed(500);
-  
   pinMode(IR_DETECT, INPUT);
   pinMode(ledPin, OUTPUT);
 }
@@ -78,7 +76,6 @@ void loop() {
   
   while (BTSerial.available()) {
     data = BTSerial.read();
-
     //Amount Slicing
     if (data == 'A') {
       byteToString = "";
@@ -193,8 +190,8 @@ void loop() {
     byteToString = "";
     timeSetActive = false;
   }
-  /*
-  Serial.println(t.hour);
+  
+  /*Serial.println(t.hour);
   Serial.println(t.min);
   Serial.println(t.sec);*/
   if ((t.hour == MorningFeedH && t.min == MorningFeedM) || (t.hour == LunchFeedH && t.min == LunchFeedM) || (t.hour == DinnerFeedH && t.min == DinnerFeedM)) {
@@ -204,7 +201,7 @@ void loop() {
   }
 
   if (remainCheckActive) {
-    if (millis() - WhenFeedsec >= 14000) {
+    if (millis() - WhenFeedsec >= 10000) {
       remainFeed = getWeight();
       Serial.println(remainFeed);
 
@@ -230,7 +227,7 @@ void loop() {
     digitalWrite(ledPin, 0);
   }
   delay(100);
- 
+
 }
 
 
@@ -251,6 +248,7 @@ void feeding() {
     for (int i = 0; i < 32; i++) { // 64 * 32 = 2048 한바퀴
       myStepper.step(stepsPerRevolution);
       tempWeight = getWeight();
+      Serial.println(tempWeight);
       if (tempWeight > feedAmount) break;
     }
   }
