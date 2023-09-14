@@ -1,7 +1,7 @@
 ![image](https://user-images.githubusercontent.com/85036337/191535820-c8247daa-ca5f-440d-856d-cfb86115c1d9.png)
 
 # Android-Arduino-PetFeeder
-류예준 졸업작품
+졸업작품
 
 Based on kai-morich "SimpleBluetoothLeTerminal"
 (https://github.com/kai-morich/SimpleBluetoothLeTerminal)
